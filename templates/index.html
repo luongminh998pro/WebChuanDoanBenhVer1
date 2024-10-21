@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự đoán Khoa Phòng</title>
+    <link rel="stylesheet" href="/static/css/styles.css"> 
+    <style>
+        /* CSS sẽ được đưa vào đây (xem dưới) */
+    </style>
+</head>
+<body>
+    <!-- Menu điều hướng -->
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/dataset">Data Set</a></li>
+            <li><a href="/xgboost">XGBoost Alg</a></li>
+            <li><a href="/about">About Author</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <h1>HỖ TRỢ PHÂN LOẠI KHÁM CHỮA BỆNH BAN ĐẦU</h1>
+
+        <!-- Form nhập liệu -->
+        <form method="POST" id="predictionForm">
+            <label for="quatrinh_benhly">Quá trình bệnh lý:</label><br>
+            <textarea name="quatrinh_benhly" id="quatrinh_benhly" class="input-field" rows="3" required></textarea><br><br>
+
+            <label for="kham_benh_toanthan">Khám bệnh toàn thân:</label><br>
+            <textarea name="kham_benh_toanthan" id="kham_benh_toanthan" class="input-field" rows="3" required></textarea><br><br>
+
+            <label for="kham_benh_cac_bophan">Khám bệnh các bộ phận:</label><br>
+            <textarea name="kham_benh_cac_bophan" id="kham_benh_cac_bophan" class="input-field" rows="3" required></textarea><br><br>
+
+            <label for="ly_do_dieu_tri">Lý do điều trị:</label><br>
+            <textarea name="ly_do_dieu_tri" id="ly_do_dieu_tri" class="input-field" rows="3"></textarea><br><br> <!-- Bỏ thuộc tính required ở đây -->
+
+            <!-- Nút "Dự đoán" và "Reset" -->
+            <div class="button-container">
+                <button type="submit">Dự đoán</button>
+                <button type="button" onclick="resetForm()">Reset</button>
+            </div>
+        </form>
+
+        <!-- Kết quả dự đoán -->
+        {% if prediction %}
+        <h2 id="predictionResult">Kết quả dự đoán: {{ prediction }}</h2>
+        {% endif %}
+    </div>
+
+    <script>
+        // Hàm để reset các trường textarea về trống và ẩn kết quả dự đoán
+        function resetForm() {
+            document.getElementById("quatrinh_benhly").value = "";
+            document.getElementById("kham_benh_toanthan").value = "";
+            document.getElementById("kham_benh_cac_bophan").value = "";
+            document.getElementById("ly_do_dieu_tri").value = "";
+
+            var predictionResult = document.getElementById("predictionResult");
+            if (predictionResult) {
+                predictionResult.innerHTML = ""; // Xóa nội dung kết quả
+            }
+        }
+
+        // Reset dữ liệu khi tải lại trang (bấm F5)
+        window.onbeforeunload = function() {
+            resetForm();
+        }
+    </script>
+</body> 
+</html>
