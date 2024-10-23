@@ -941,7 +941,7 @@ def match_department(QUATRINHBENHLY, KHAMBENHTOANTHAN, KHAMBENHCACBOPHAN, LYDODI
     # Trả về bàn khám tốt nhất, Accuracy và F1 Score
     return best_departments[0] if best_departments else 'Khoa phòng không xác định', accuracy, f1_score
 
-# Hàm để làm sạch mức lương (được điều chỉnh cho phù hợp)
+# Hàm để làm sạch dữ liệu
 def clean_data(data_str):
     return data_str.strip() if data_str else "N/A"
 
@@ -995,6 +995,7 @@ def index():
     prediction = ""
     accuracy = 0
     f1_score = 0
+    show_modal = False  # Thêm biến để điều khiển việc hiển thị modal
     if request.method == 'POST':
         QUATRINHBENHLY = request.form['quatrinh_benhly']
         KHAMBENHTOANTHAN = request.form['kham_benh_toanthan']
@@ -1002,8 +1003,9 @@ def index():
         LYDODIEUTRI = request.form['ly_do_dieu_tri']
         
         prediction, accuracy, f1_score = match_department(QUATRINHBENHLY, KHAMBENHTOANTHAN, KHAMBENHCACBOPHAN, LYDODIEUTRI)
-    
-    return render_template('index.html', prediction=prediction, accuracy=accuracy, f1_score=f1_score)
+        show_modal = True  # Đặt biến này thành True để hiển thị modal
+
+    return render_template('index.html', prediction=prediction, accuracy=accuracy, f1_score=f1_score, show_modal=show_modal)
 
 @app.route('/dataset')
 def dataset():
